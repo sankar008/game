@@ -1,0 +1,46 @@
+@media only screen and (max-width: 767px) {
+
+  .resp_sz {
+  	  font-size: 18px !important;
+  	  padding: 5px 0;
+  }
+
+  .ntah-blue-sec {
+  	 font-size: 15px !important;
+  }
+
+  .ntah {
+    font-size: 18px !important;
+    padding:5px 0;
+   } 
+
+   .para2 {
+   	  padding:10px !important;
+   }
+
+   .satta-result h4 {
+      font-size:17px;
+   }
+
+   .satta-result span {
+   	  font-size: 17px;
+   }
+
+   .blue-div a {
+   	  font-size:17px;
+   }
+
+   .purpel-header a  {
+   	  font-size:17px;
+   }
+
+   .matka-card {
+   	  padding: 10px 0;
+   }
+ 
+   .matka-card .gn {
+   	  font-size:17px;
+   	  padding-top: 8px !important;
+   }
+ 
+} 
