@@ -1,5 +1,7 @@
+
 @extends('layouts.app')
 @section('content')
+
     <div class="cm-patti">
         <h3>Today Lucky Number</h3>
         <div class="row">
@@ -27,7 +29,8 @@
             
             @foreach($livegameDetails as $val)
             <span class="gn">{{ $val['name'] }}</span>
-            <span class="gr">{{ $val['result'] }}</span>
+           
+            <span class="gr">{{ $val['is_result_show']?$val['result']:'Loading...' }}</span>
             <button onclick="window.location.reload()">Refresh</button>
             @endforeach
             <br>
@@ -64,7 +67,11 @@
         @foreach($livegameDetails as $val)
         <hr>
         {{ $val['name'] }}<br>
+        @if($val['is_result_show'] == true)
         <span style="color:#011e76;">{{ date('h:i a', strtotime($val['start_time'] )) }} to {{ date('h:i a', strtotime($val['end_time'] )) }}</span>
+        @else
+        <span style="color:#011e76;">Loading...</span>
+        @endif
         @endforeach
     </div>
     <div>
@@ -78,6 +85,7 @@
     <div class="satta-result" style="border-color: #aa00c0;margin-bottom: 2px;">
         
         @foreach($allgameDetails as $val)
+      
         <div style="background-color: {{ $val['background_color'] != '#ffffff'?$val['background_color']:''}}">
             <h4>{{ $val ->name }}</h4>
             <span>{{ $val->result }}</span>
@@ -85,6 +93,8 @@
             <a href="{{ route('jodi', ['slug_name'=> $val->slug_name]) }}" class="result_timing btn_chart">Jodi</a>
             <a href="{{ route('panel', ['slug_name'=> $val->slug_name]) }}" class="result_timing_right btn_chart">Panel</a>
         </div>
+        
+      
       @endforeach 
     </div>
  

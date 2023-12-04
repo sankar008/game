@@ -1527,7 +1527,7 @@
                                             @if(array_key_exists($d, $val))
                                             <td>{!! $val[$d]['left_result'] !!}</td>
                                             <td>{{ $val[$d]['main_result'] }}</td>
-                                            <td> 2<br> 4<br> 8<br></td>
+                                            <td> {!! $val[$d]['right_result'] !!}</td>
                                             @else
                                             <td></td>
                                             <td></td>

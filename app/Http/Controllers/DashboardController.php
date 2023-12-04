@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -18,18 +19,28 @@ class DashboardController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request){
-        return view('admin.dashboard');
+    public function index(Request $request){   
+        if(Auth::user()->role_id == 1){     
+        $data['total_market'] = Jodi::count();
+        $data['total_user'] = User::count();
+        }else{
+            $data['total_market'] = Allocation::where('user_id', Auth::user()->id)->count();
+        }
+        return view('admin.dashboard', $data);
     }
 
     public function remderJodiList(){
+        if(Auth::user() -> id == 1){
         return view('admin.jodi_list');
+        }
     }
 
     public function remderMarketSerial(){
+        if(Auth::user() -> id == 1){
         $marketId = Marketserial::select('market_id')->first();
         $data['serial_no'] = $marketId->market_id;
         return view('admin.jodi_serial', $data);
+        }
     }
 
     public function remderMarketResult(){
@@ -38,7 +49,8 @@ class DashboardController extends Controller
         return view('admin.market_result', $data);
     }
 
-    public function getMarketSerial(){        
+    public function getMarketSerial(){  
+        if(Auth::user() -> id == 1){      
         $jodiNumber = Marketserial::get()->map(function($items){
             $marketId = collect(explode(',', $items->market_id));
             $market = $marketId->map(function($mar){
@@ -58,6 +70,7 @@ class DashboardController extends Controller
         $jodiNumber = array_merge($blankArray, array_filter($jodiNumber->toArray()));       
            
         return response()->json(['status' => 'success', 'data' => collect($jodiNumber)]);
+    }
     }
 
     public function getJodiList(Request $request){
@@ -162,6 +175,7 @@ class DashboardController extends Controller
     }
 
     public function getMarketResult(Request $request){
+       if(Auth::user()->role_id == 1){
         $name = $request->name??0;  
         $jodiDetails = Jodi::select("*")->with('jodi_number')->get()->map(function($items){
             $items->result = $items->jodi_number?->result;
@@ -171,6 +185,21 @@ class DashboardController extends Controller
             $items->end_time = $items->result != ''?$items->jodi_number?->end_time:date('Y-m-d H:i:s', time());
             return $items;
         });
+
+    }else{
+
+        $jodiDetails = Allocation::where('user_id', Auth::user()->id)->with('market')->with('market.jodi_number')->get()->map(function($items){
+            $items->result = $items->market?->jodi_number?->result;
+            $items->name = $items->market?->name;
+            $items->start_time_format = $items->market?->jodi_number?->result != ''?date('h:i a', strtotime($items->market->jodi_number?->start_time)):'';
+            $items->end_time_format = $items->market?->jodi_number?->result != ''?date('h:i a', strtotime($items->market?->jodi_number?->end_time)):'';
+            $items->start_time = $items->market?->jodi_number?->result != ''?$items->market?->jodi_number?->start_time:date('Y-m-d H:i:s', time());
+            $items->end_time = $items->market?->jodi_number?->result != ''?$items->market?->jodi_number?->end_time:date('Y-m-d H:i:s', time());
+            return $items;
+        });
+    }
+
+   
 
         return response()->json(['status' => 'success', 'data' => $jodiDetails]);
     }
@@ -196,9 +225,10 @@ class DashboardController extends Controller
     }
 
     public function renderUserList(Request $request){
-    
+        if(Auth::user() -> id == 1){
         $data['user'] = [];
         return view('admin.user_list', $data);
+        }
     }
 
     public function addUserList(Request $request){
@@ -258,7 +288,11 @@ class DashboardController extends Controller
     }
 
     public function getUserAllocationList(){
-        $allocations =  Allocation::get();
+        $allocations =  Allocation::with('user')->with('market')->get()->map(function($items){
+            $items->market_name = $items->market->name;
+            $items->user_name = $items->user->name;
+            return $items;
+        });
         return response()->json(['status' => 'success', 'data' => $allocations]);
     }
 

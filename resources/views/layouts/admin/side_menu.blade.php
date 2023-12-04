@@ -13,6 +13,7 @@
             </a>
         </li>
 
+        @if(Auth::user()->role_id == 1)
         <li>
             <a href="{{ route('user.list') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
@@ -35,18 +36,22 @@
         </li>
 
         <li>
+            <a href="{{ route('market.serial') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
+                <div class="side-menu__title"> Market List </div>
+            </a>
+        </li>
+
+        @endif
+
+        <li>
             <a href="{{ route('market.result') }}" class="side-menu {{ Request::is('result') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
                 <div class="side-menu__title"> Market Result</div>
             </a>
         </li>
 
-        <li>
-            <a href="{{ route('market.serial') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
-                <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
-                <div class="side-menu__title"> Market List </div>
-            </a>
-        </li>
+       
        
         <li>
             <a class="side-menu" href="javascript:void(0);"

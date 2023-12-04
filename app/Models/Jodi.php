@@ -65,4 +65,8 @@ class Jodi extends Model
     public function all_jodi_number():HasMany{
         return $this->hasMany(Jodinumber::class, 'jodi_id', 'id')->orderBy('date');
     }
+
+    public function allocation():HasMany{
+        return $this->hasMany(Allocation::class, 'market_id', 'id');
+    }
 }

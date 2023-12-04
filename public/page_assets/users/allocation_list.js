@@ -76,12 +76,12 @@ export const getUserAllocationList = async (formData = {}) => {
           }
         },
         {
-          dataField: 'user_id',
+          dataField: 'user_name',
           caption: "User Name",
           alignment: 'center'
         },
         {
-            dataField: 'market_id',
+            dataField: 'market_name',
             caption: "Market Name",
             alignment: 'center'
           },

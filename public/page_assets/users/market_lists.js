@@ -265,11 +265,13 @@ export const addUserList = (data = {}) => {
                   },
                   {
                     dataField: 'after_time',
+                    editorType: 'dxNumberBox',
                     caption: 'After',
                     alignment: 'left',          
                   },
                   {
                     dataField: 'before_time',
+                    editorType: 'dxNumberBox',
                     caption: 'Before',
                     alignment: 'left',
                   },
