@@ -1,4 +1,4 @@
-import { addUserList, getUserList } from '../../page_assets/users/user_list.js';
+import { addUserList, getUserList } from '../../page_assets/users/market_lists.js';
 
 let fromData = {};
 loadSearchForm(fromData); //load search form
@@ -16,20 +16,20 @@ function loadSearchForm(formData) {
       items: [
         {
           itemType: 'group',
-          colCount: 3,
+          colCount: 2,
           items: [
             {
               dataField: 'name',
+              validationRules: [
+                {
+                  type: 'required',
+                  message: 'Market name is required'
+                }
+              ],
               label: {
-                text: 'User name'
+                text: 'Market Name'
               }
             },
-            {
-                dataField: 'email',
-                label: {
-                  text: 'Email Id'
-                }
-              },
             {
                 itemType: 'simple',
                 template: function (data, itemElement) {

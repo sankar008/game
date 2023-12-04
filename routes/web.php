@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,11 +25,32 @@ Route::get('jodi/{slug_name}', [HomeController::class, 'jodi'])->name('jodi');
 
 Auth::routes();
 
+Route::get('clear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('optimize');
+   echo "All cache clear successfully";
+});
+
 Route::controller(DashboardController::class)
     ->prefix('admin')
     ->group(function () {
         Route::get('dashboard', 'index')->name('dashboard');
-        Route::get('market', 'remderJodiList')->name('user.list');
+
+        Route::get('user', 'renderUserList')->name('user.list');
+
+        Route::post('add-user', 'addUserList')->name('api.add.user');
+        Route::get('user-list', 'getUserList')->name('api.user.list');
+        Route::post('update-user', 'updateUserList')->name('api.update.user');
+
+
+        Route::get('allocation', 'renderUserAllocation')->name('user.allocation');
+
+        Route::post('add-user-allocation', 'addUserAllocationList')->name('api.add.user.allocation');
+        Route::get('allocation-user-list', 'getUserAllocationList')->name('api.user.list.allocation');
+        Route::post('update-user-allocation', 'updateUserAllocationList')->name('api.update.user.allocation');
+
+        Route::get('market', 'remderJodiList')->name('market.list');
+
         Route::get('market-serial', 'remderMarketSerial')->name('market.serial');
         Route::get('market-result', 'remderMarketResult')->name('market.result');
         

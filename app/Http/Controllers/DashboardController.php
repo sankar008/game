@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Allocation;
 use App\Models\Jodi;
 use App\Models\Jodinumber;
 use App\Models\Marketserial;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use LDAP\Result;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -190,6 +192,83 @@ class DashboardController extends Controller
         ]);
 
         return response()->json(['status' => 'success', 'data' => [], 'message' => 'Market serial updated successfully!!']);
+
+    }
+
+    public function renderUserList(Request $request){
+    
+        $data['user'] = [];
+        return view('admin.user_list', $data);
+    }
+
+    public function addUserList(Request $request){
+        
+        $user =  User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role_id' => 2,
+            'password_text' => $request->password_text,
+            'password' => Hash::make($request->password_text),
+        ]);
+
+        return response()->json(['status' => 'success', 'data' => [], 'message' => 'One record inserted successfully!!']);
+    }
+
+    public function updateUserList(Request $request){
+        $user = User::where(['id'=>$request->id])->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password_text' => $request->password_text,
+            'password' => Hash::make($request->password_text),
+        ]);
+
+        return response()->json(['status' => 'success', 'data' => [], 'message' => 'One record updated successfully!!']);
+
+    }
+
+    public function getUserList(Request $request){
+        $row_name = $request->name??0;
+        $row_email = $request->email??0;
+        $userData = User::where('role_id', 2)
+            ->when($row_name>0, function($q) use($row_name){
+            $q->where('name', $row_name);
+            })
+            ->when($row_email>0, function($q) use($row_email){
+                $q->where('email', $row_email);
+            }
+        )->get();
+        return response()->json(['status' => 'success', 'data' => $userData]);
+
+    }  
+    
+    public function renderUserAllocation(){
+        $data['user'] = User::select('id', 'name')->where('role_id', 2)->get();
+        $data['market'] = Jodi::select('id', 'name')->get();
+        return view('admin.user_allocation_list', $data);
+    }
+
+    public function addUserAllocationList(Request $request){
+
+        $user =  Allocation::create([
+            'market_id' => $request->market_id,
+            'user_id' => $request->user_id,
+        ]);
+
+        return response()->json(['status' => 'success', 'data' => [], 'message' => 'One record inserted successfully!!']);
+    }
+
+    public function getUserAllocationList(){
+        $allocations =  Allocation::get();
+        return response()->json(['status' => 'success', 'data' => $allocations]);
+    }
+
+    public function updateUserAllocationList(Request $request){
+        $user = Allocation::where(['id'=>$request->id])->update([
+            'market_id' => $request->market_id,
+            'user_id' => $request->user_id,
+        ]);
+
+        return response()->json(['status' => 'success', 'data' => [], 'message' => 'One record updated successfully!!']);
 
     }
 }

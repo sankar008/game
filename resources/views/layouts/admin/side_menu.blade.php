@@ -12,8 +12,23 @@
                 <div class="side-menu__title"> Dashboard </div>
             </a>
         </li>
+
         <li>
             <a href="{{ route('user.list') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
+                <div class="side-menu__title"> User </div>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('user.allocation') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
+                <div class="side-menu__title"> Allocation </div>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('market.list') }}" class="side-menu {{ Request::is('dashboard') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon"> <i class="fa fa-home"></i> </div>
                 <div class="side-menu__title"> Market </div>
             </a>

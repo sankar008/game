@@ -1,4 +1,4 @@
-import { addUserList, getUserList } from '../../page_assets/users/user_list.js';
+import { addUserAllocationList, getUserAllocationList } from '../../page_assets/users/allocation_list.js';
 
 let fromData = {};
 loadSearchForm(fromData); //load search form
@@ -24,12 +24,7 @@ function loadSearchForm(formData) {
                 text: 'User name'
               }
             },
-            {
-                dataField: 'email',
-                label: {
-                  text: 'Email Id'
-                }
-              },
+            
             {
                 itemType: 'simple',
                 template: function (data, itemElement) {
@@ -47,7 +42,7 @@ function loadSearchForm(formData) {
                       let validationGroup = e.validationGroup.validate();
                       if (validationGroup.isValid) {
                         let formData = form.option().formData;
-                        getUserList(formData);
+                        getUserAllocationList(formData);
                       }
                     }
                   });
@@ -65,7 +60,7 @@ function loadSearchForm(formData) {
                     onClick(e) {
                       let validationGroup = e.validationGroup.validate();
                       if (validationGroup.isValid) {
-                        getUserList();
+                        getUserAllocationList();
                       }
                     }
                   });
@@ -81,7 +76,7 @@ function loadSearchForm(formData) {
                     },
                     useSubmitBehavior: true,
                     onClick(e) {
-                        addUserList();
+                        addUserAllocationList();
                     }
                   });
                   itemElement.append([successBtn, resetBtn, addBtn]);
