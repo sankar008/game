@@ -91,3 +91,31 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+
+
+        $no = '980-3';
+        $start_time = "15:50";
+        $end_time = "16:12";
+        $presentTime   =  Carbon::now()->format('H:i');
+        $beforeTime    = Carbon::parse($start_time)->subMinutes(15)->format("H:i");
+        $status = 0;
+        
+        $afterTime = Carbon::parse($end_time)->subMinutes(15)->format("H:i");
+
+        if(($beforeTime <=  $presentTime && $presentTime < $start_time)){
+            $status = 1;
+        }
+
+        if($no == ''){
+            $status = 2;
+        }
+
+        if($afterTime < $presentTime && $presentTime < $end_time){
+            $status = 3;
+        }
+
+        echo $status;
+        die;
+        echo $beforeTime;
+        die;
